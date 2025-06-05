@@ -35,6 +35,9 @@ const ProjectDeleteButton: React.FC<ProjectDeleteButtonProps> = ({
       duration: 2000,
     });
     try {
+      if (!defaultFormData) {
+        throw new Error('No project data provided for deletion.');
+      }
       await fetcher.submit(defaultFormData, {
         action: '/app/projects',
         method: 'DELETE',
@@ -42,7 +45,7 @@ const ProjectDeleteButton: React.FC<ProjectDeleteButtonProps> = ({
       });
 
       toast.success('Project deleted successfully', {
-        description: `The project ${truncateString(defaultFormData?.name || '', 32)} has been successfully deleted.`,
+        description: `The project ${truncateString(defaultFormData.name || '', 32)} has been successfully deleted.`,
         duration: 5000,
       });
     } catch (err) {
