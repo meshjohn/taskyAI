@@ -65,13 +65,56 @@ const createProject = async (data: ProjectForm) => {
   return redirect(`/app/projects/${project?.$id}`);
 };
 
+const deleteProject = async (data: ProjectForm) => {
+  const documentId = data.id;
+  if (!documentId) {
+    throw new Error('No project found');
+  }
+  try {
+    await databases.deleteDocument(
+      APPWRITE_DATABASE_ID,
+      APPWRITE_PROJECTS_ID,
+      documentId,
+    );
+  } catch (error) {
+    console.log('Error deleting project:', error);
+  }
+};
+
+const updateProject = async (data: ProjectForm) => {
+  const documentId = data.id;
+  if (!documentId) {
+    throw new Error('No project found');
+  }
+  try {
+    await databases.updateDocument(
+      APPWRITE_DATABASE_ID,
+      APPWRITE_PROJECTS_ID,
+      documentId,
+      {
+        name: data.name,
+        color_name: data.color_name,
+        color_hex: data.color_hex,
+      },
+    );
+  } catch (error) {
+    console.log('Error updating project:', error);
+  }
+};
+
 const projectAction: ActionFunction = async ({ request }) => {
   const method = request.method;
   const data = (await request.json()) as ProjectForm;
   if (method === 'POST') {
     return await createProject(data);
   }
-  return null;
+  if (method === 'PUT') {
+    return await updateProject(data);
+  }
+  if (method === 'DELETE') {
+    return await deleteProject(data);
+  }
+  throw new Error('Invalid request method');
 };
 
 export default projectAction;

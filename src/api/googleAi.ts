@@ -26,4 +26,4 @@ const generateProjectTasks = async (prompt: string) => {
   }
 };
 
-export { generateProjectTasks };
+export { generateProjectTasks }
