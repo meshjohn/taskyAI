@@ -29,5 +29,5 @@
 1. Clone the repo:
 
 ```bash
-git clone https://github.com/your-username/taskyai.git
+git clone https://github.com/meshjohn/taskyAI.git
 cd taskyai
